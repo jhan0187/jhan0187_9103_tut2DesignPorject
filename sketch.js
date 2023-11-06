@@ -22,6 +22,7 @@ function draw() {
   noStroke();
   drawCurves();
   drawBridge();
+  drawFlash();
   drawPerson1();
   drawPerson2();
   drawGhost();
@@ -348,4 +349,28 @@ function drawGhostBody(waveWidth, startX, startY, h, fillColor, nextX, ghostLaye
     quad(320, 288.5, 320, 420, 340, 440, 340, 305);
     quad(470, 380, 470, 620, 500, 650, 500, 400);
     quad(760, 560, 760, 720, 810, 720, 810, 590);
+}
+
+// draw flash by using Perlin noise
+function drawFlash() {
+  stroke(201, 146, 95);
+  strokeWeight(6);
+  noFill();
+  beginShape();
+  let xOff = start;
+  for (let x = 0; x < height; x++) {
+    if (x > 720) {
+      xOff = 0; 
+    }
+    let y1 = noise(xOff, yOff) * 300;
+    //let y2 = noise(xOff + 10, yOff + 10) * 400; // 添加第二个噪声曲线
+    //let y3 = noise(xOff - 10, yOff - 10) * 400; // 添加第三个噪声曲线
+    curveVertex(y1, x);
+    //curveVertex(y2, x); // 添加第二个曲线的顶点
+    //curveVertex(y3, x); // 添加第三个曲线的顶点
+    //curveVertex(y, x);
+    xOff -= 0.005;
+    yOff -= 0.005;
+  }
+  endShape();
 }
