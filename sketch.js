@@ -363,12 +363,7 @@ function drawFlash() {
       xOff = 0; 
     }
     let y1 = noise(xOff, yOff) * 300;
-    //let y2 = noise(xOff + 10, yOff + 10) * 400; // 添加第二个噪声曲线
-    //let y3 = noise(xOff - 10, yOff - 10) * 400; // 添加第三个噪声曲线
     curveVertex(y1, x);
-    //curveVertex(y2, x); // 添加第二个曲线的顶点
-    //curveVertex(y3, x); // 添加第三个曲线的顶点
-    //curveVertex(y, x);
     xOff -= 0.005;
     yOff -= 0.005;
   }
