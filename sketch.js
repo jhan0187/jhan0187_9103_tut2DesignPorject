@@ -165,9 +165,9 @@ function drawPerson1() {
   rotate(radians(-10)); 
   ellipse(0, 0, 11, 42);
   pop(); 
-
-  ellipse((xmovingFoot1-7.5),(ymovingBody+32), 8, 6); // left shoe, moving with higher speed than the body
-  ellipse((xmovingFoot1+7.5),(ymovingBody+32), 8, 6); // right shoe, moving with higher speed than the body
+  // shoes move to left and right
+  ellipse((xmovingFoot1-4),(ymovingBody+32), 8, 6); // left shoe, moving with higher speed than the body
+  ellipse((xmovingFoot1+4),(ymovingBody+32), 8, 6); // right shoe, moving with higher speed than the body
 }
 
 // add animation on drawPerson2
@@ -214,8 +214,8 @@ function drawPerson2() {
   ellipse(0, 0, 7, 26); 
   pop();   
 
-  ellipse((xmovingFoot-7.5),(ymovingLeftLeg+22), 8, 6); // left shoe, moving with higher speed than the body
-  ellipse((xmovingFoot+7.5),(ymovingLeftLeg+22), 8, 6); // right shoe, moving with higher speed than the body
+  ellipse((xmovingFoot-4),(ymovingLeftLeg+22), 8, 6); // left shoe, moving with higher speed than the body
+  ellipse((xmovingFoot+4),(ymovingLeftLeg+22), 8, 6); // right shoe, moving with higher speed than the body
 }
 
 function drawGhost() {
@@ -351,21 +351,33 @@ function drawGhostBody(waveWidth, startX, startY, h, fillColor, nextX, ghostLaye
     quad(760, 560, 760, 720, 810, 720, 810, 590);
 }
 
-// draw flash by using Perlin noise
+// draw flashes by using Perlin noise
+
 function drawFlash() {
-  stroke(201, 146, 95);
-  strokeWeight(6);
-  noFill();
-  beginShape();
-  let xOff = start;
-  for (let x = 0; x < height; x++) {
-    if (x > 720) {
-      xOff = 0; 
+  let numCurves = 3; // The number of flashes
+
+  for (let i = 0; i < numCurves; i++) {
+    let xOff = random(1000); 
+    let yOff = random(1000); 
+    let flashColor = color(random(255), random(255), random(255), 170); // setup the flash colour
+
+    stroke(flashColor); 
+    strokeWeight(6);
+    noFill();
+    beginShape();
+
+    let xOffsetRandom = random(-60, 60); // setup xmovement range
+
+    for (let x = 0; x < height; x++) {
+      if (x > 720) {
+        xOff = random(1000); // reset xOffset
+        yOff = random(1000); // reset yOffset
+      }
+      let y = noise(xOff, yOff) * 300;
+      curveVertex(y + xOffsetRandom, x); // add xmovement
+      xOff -= 0.005;
+      yOff -= 0.005;
     }
-    let y1 = noise(xOff, yOff) * 300;
-    curveVertex(y1, x);
-    xOff -= 0.005;
-    yOff -= 0.005;
+    endShape();
   }
-  endShape();
 }
