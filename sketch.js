@@ -2,6 +2,14 @@ let curves = [];
 let colOffset = 0;
 let ghostLayer;
 
+// added variables
+let xOff = 0;
+let yOff = 0;
+let xOffset = 0;
+let start = 0;
+let xWave = 0;
+let yWave = 0;
+
 function setup() {
   createCanvas(1280, 720);
   backgroundCurve();
@@ -112,80 +120,101 @@ class Curve {
   }
 }
 
+// add animation on Person1
 function drawPerson1() {
+  xOff += 0.01;
+  yOff += 0.01;
+  xOffset += 0.1;
+  let xmovingP1 = map(noise(xOff),0,1,88,123);
+  let xmovingFoot1 = map(noise(xOffset),0,1,88,123);
+  let ymoving = map(noise(yOff),0,1,300,197);
+  let ymovingBody = map(noise(yOff),0,1,318,215);
+  
   fill(0);
   noStroke();
-  ellipse(120, 150, 10, 9); // head
-  ellipse(116, 147, 5, 4); // left part of the hat
-  ellipse(124, 147, 7, 4);// right part of the hat
-  ellipse(120, 168, 16, 33);// body
+  let head = ellipse(xmovingP1,ymoving, 10, 9); // head
+  ellipse((xmovingP1-4),(ymoving-3), 5, 4); // left part of the hat
+  ellipse((xmovingP1+4),(ymoving-3), 7, 4);// right part of the hat
+  ellipse(xmovingP1,ymovingBody, 16, 33);// body
   
   // left arm 
   push(); 
-  translate(117, 168); // Move the origin to the centre of arm ellipse
+  translate((xmovingP1-3),(ymoving+18)); // Move the origin to the centre of arm ellipse
   rotate(radians(35)); // Apply the rotation
   ellipse(0, 0, 15, 24); // Draw the rotated ellipse
   pop();
 
   // right arm
   push();
-  translate(122, 168);
+  translate((xmovingP1+2),(ymoving+18));
   rotate(radians(135)); 
   ellipse(0, 0, 17, 15);
   pop();
 
   // left leg
   push();
-  translate(118, 178);
+  translate((xmovingP1-2),(ymoving+28));
   rotate(radians(10)); 
   ellipse(0, 0, 11, 42);
   pop(); 
 
   // right leg
   push();
-  translate(121, 178);
+  translate((xmovingP1+1),(ymoving+28));
   rotate(radians(-10)); 
   ellipse(0, 0, 11, 42);
   pop(); 
+
+  ellipse((xmovingFoot1-7.5),(ymovingBody+32), 8, 6); // left shoe, moving with higher speed than the body
+  ellipse((xmovingFoot1+7.5),(ymovingBody+32), 8, 6); // right shoe, moving with higher speed than the body
 }
 
+// add animation on drawPerson2
 function drawPerson2() {
+  xOff += 0.01;
+  yOff += 0.01;
+  xOffset += 0.1;
+  let xmovingP2 = map(noise(xOff),0,1,120,161);
+  let xmovingFoot = map(noise(xOffset),0,1,120,161);
+  let ymoving = map(noise(yOff),0,1,197,300);
+  let ymovingBody = map(noise(yOff),0,1,215,318);
+  let ymovingLeftLeg = map(noise(yOff),0,1,230,333);
   fill(0);
-  ellipse(142, 151, 9, 8); // head
-  ellipse(142, 148, 16, 4); // hat bottom
-  ellipse(142.5, 147, 7, 8); // hat top
-  ellipse(142.5, 168, 15, 28); // body
+  ellipse(xmovingP2, ymoving, 9, 8); // head
+  ellipse(xmovingP2, ymoving, 16, 4); // hat bottom
+  ellipse(xmovingP2, ymoving, 7, 8); // hat top
+  ellipse(xmovingP2, ymovingBody, 15, 28); // body
 
   // left leg 1
   push(); 
-  translate(140, 177); // move the origin to the centre of leg ellipse
+  translate((xmovingP2-2.5),ymovingLeftLeg); // move the origin to the centre of leg ellipse
   rotate(radians(5)); // apply the rotation
   ellipse(0, 0, 9, 33); // draw the rotated ellipse
   pop();
 
   // left leg 2
   push(); 
-  translate(138, 190);
+  translate((xmovingP2-4.5),(ymovingLeftLeg+13));
   rotate(radians(4)); 
   ellipse(0, 0, 7, 26);
   pop();
 
   // right leg 1
   push(); 
-  translate(145, 177);
+  translate((xmovingP2+2.5),ymovingLeftLeg);
   rotate(radians(-5));
   ellipse(0, 0, 9, 33); 
   pop(); 
 
   // left leg 2
   push(); 
-  translate(146, 190);
+  translate((xmovingP2+4.5),(ymovingLeftLeg+13));
   rotate(radians(-3));
   ellipse(0, 0, 7, 26); 
   pop();   
 
-  ellipse(137, 199, 8, 6); // left shoe
-  ellipse(147, 199, 8, 6); // right shoe
+  ellipse((xmovingFoot-7.5),(ymovingLeftLeg+22), 8, 6); // left shoe, moving with higher speed than the body
+  ellipse((xmovingFoot+7.5),(ymovingLeftLeg+22), 8, 6); // right shoe, moving with higher speed than the body
 }
 
 function drawGhost() {
